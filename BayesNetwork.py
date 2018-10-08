@@ -1,4 +1,5 @@
-
+import sys
+import random
 
 class Node():
 
@@ -77,7 +78,6 @@ def main():
     network_file = sys.argv[1]
     query_file = sys.argv[2]
     num_samples = sys.argv[3]
-    G = nx.Graph()
     node_list = []
 
     with open(network_file, 'r') as f:
@@ -119,10 +119,12 @@ def main():
 
             # Now create the node
             node_list.append(Node(name, parent_list, prob_list))
-            # Now add node to graph
-            # G.add_node(n)
+
     for node in node_list:
         node.find_parents(node_list)
+    #rejection sampling
+
+    #likelihood weighting sampling
 
 
 
