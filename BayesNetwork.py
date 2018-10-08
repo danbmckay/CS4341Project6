@@ -1,3 +1,5 @@
+import random
+
 
 class Node():
 
@@ -14,7 +16,7 @@ class Node():
         self.num_children = 0
         self.conditions = some_conditions
         self.num_parents = len(some_parents)
-        self.status = -1  # the prob for unknown, 1 True, 0 False, and 3 Query variable
+
 
     # do after all nodes have been created to find their parent nodes
     def find_parents(self, nodes):
@@ -30,33 +32,45 @@ class Node():
     def create_init_status(self, status):
         self.status = status
 
-    def change_status(self):
-
-        if self.has_parents:
-            probabilities = []
-            place_in_table = []
-            for a_parent in self.parent_nodes:
-                temp_result = a_parent.change_status()
-                place_in_table.append(temp_result[1])
-                probabilities.append(temp_result[0])
-
-            temp_place = 0
-            counter = 1
-            for a_place in place_in_table:
-                if a_place:
-                    temp_place += counter
-
-                counter *= 2
-
-            self.status = self.conditions[temp_place]
-
-        else:
-            if self.status == 1:
-                return [self.conditions[0], True]
-            elif self.status == 0:
-                return [1 - self.conditions[0], False]
+    # def change_status(self):
+    #
+    #     if self.has_parents:
+    #         probabilities = []
+    #         place_in_table = []
+    #         for a_parent in self.parent_nodes:
+    #             temp_result = a_parent.change_status()
+    #             place_in_table.append(temp_result[1])
+    #             probabilities.append(temp_result[0])
+    #
+    #         temp_place = 0
+    #         counter = 1
+    #         for a_place in place_in_table:
+    #             if a_place:
+    #                 temp_place += counter
+    #
+    #             counter *= 2
+    #
+    #         self.status = self.conditions[temp_place]
+    #
+    #     else:
+    #         if self.status == 1:
+    #             return [self.conditions[0], True]
+    #         elif self.status == 0:
+    #             return [1 - self.conditions[0], False]
 
     def happened(self, a_prob):
 
-        if self.status > a_prob:
-            return True
+        if self.has_parents:
+            for a_parent in self.parent_nodes:
+                
+                if self.status > a_prob:
+                    return True
+
+        else:
+            choice = random.uniform(0, 1)
+            if choice > self.conditions[0]:
+                return True
+            else:
+                return False
+
+
